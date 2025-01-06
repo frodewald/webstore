@@ -1,7 +1,6 @@
 export const BACKEND_URL = process.env.VUE_APP_BACKEND_URL
 const BASE_URL = `${BACKEND_URL}/api`
 
-
 // user url
 export const USER_API_ENDPOINTS = {
     login: `${BASE_URL}/login`,
