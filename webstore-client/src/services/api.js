@@ -1,4 +1,4 @@
-const BASE_URL = "https://webstore-kdds.onrender.com"
+const BASE_URL = "https://webstore-kdds.onrender.com/api"
 
 
 // user url
