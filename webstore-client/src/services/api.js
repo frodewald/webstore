@@ -1,5 +1,5 @@
-export const BACKEND_URL = 'http://localhost:8000'
-const BASE_URL = "http://localhost:8000/api"
+export const BACKEND_URL = process.env.VUE_APP_BACKEND_URL
+const BASE_URL = `${BACKEND_URL}/api`
 
 
 // user url

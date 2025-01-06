@@ -95,6 +95,7 @@
     data() {
       return {
         Product: {...this.initialProduct},
+        BACKEND_URL
       };
     },
     methods: {

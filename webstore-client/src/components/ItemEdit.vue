@@ -38,6 +38,11 @@
 import { PRODUCT_API_ENDPOINTS, BACKEND_URL } from '@/services/api';
 import axios from 'axios';
  export default {
+  data() {
+    return {
+      BACKEND_URL
+    };
+  },
      props: [
          'product'
      ],

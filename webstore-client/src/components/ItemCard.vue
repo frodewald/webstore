@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       isInitialized: false, // Status untuk memeriksa apakah data sudah di-fetch
+      BACKEND_URL
     };
   },
   watch: {

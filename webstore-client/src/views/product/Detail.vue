@@ -37,10 +37,11 @@ export default {
         QtySelector
     },
     data() {
-        return {
-            product: {},
-            notif: false,
-        }
+      return {
+        product: {},
+        notif: false,
+        BACKEND_URL
+      }
     },
     computed: {
       quantity: {

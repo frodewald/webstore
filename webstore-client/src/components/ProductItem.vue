@@ -21,6 +21,11 @@
 // eslint-disable-next-line no-unused-vars
 import { BACKEND_URL } from '@/services/api';
 export default {
+  data() {
+    return {
+      BACKEND_URL
+    };
+  },
   props: ['product'],
 }
 </script>
