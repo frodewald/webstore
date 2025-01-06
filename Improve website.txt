@@ -1,0 +1,64 @@
+- bikin fitur admin dan create product
+- tambah notif di syarat ketentuan
+- ubah pencet detailnya jadi pencet kartu aja, gak usah tombol detail
+
+- buat db untuk category - oke
+- code (input manual oleh user), 
+imgUrl - buat metode upload - oke
+
+Halaman admin
+- tambahkan "role" dalam table user untuk menambahkan role kepada user - oke
+- Halaman dashboard - oke
+- show productnya jadi list kebawah gitu - oke
+- tambah fitur create product - oke
+- kasih gambar pencil, tong sampah buat edit - oke
+- ubah semua notif pake sweetalert2 - oke
+
+Bikin fitur search - oke
+- by name
+- by rating
+
+coba dibuat component untuk
+- search -- oke
+----------------------------- Belum --------------------------
+
+// belum
+
+- coba copy folder website-store terus migrasi ke Vue 3
+
+- dimensi diatur lagi
+- pelajarin middleware di backend
+- coba pelajarin lagi redirect di vue, itu yang bukan admin masih bisa keliatan sekilas halaman admin/dashboardnya
+
+
+connect ke database
+- jalanin (mongod --config "C:\Program Files\MongoDB\Server\6.0\bin\mongod.cfg") di cmd agar configurasi mongodbnya jalan
+
+- mau connect ke mongosh dengan configurasi pake
+mongosh "mongodb://{user}:{password}@localhost:27017/{nama_database}"
+
+contoh: mongosh "mongodb://frodewald:website-store@localhost:27017/{nama_database}"
+
+jika gw kasih aksesnya dari db admin, harus tambahin ?authSource=admin
+
+mongosh "mongodb://wald-kasir:kasir-app@localhost:27017/kasir_app?authSource=admin"
+
+mongosh "mongodb://frodewald:website-store@localhost:27017/{nama_database}"
+
+Kalo mau kasih akses
+mongosh "mongodb://frodewald:website-store@localhost:27017/admin"
+
+db.createUser({
+  user: "username",         
+  pwd: "password",          
+  roles: [
+    {
+      role: "readWrite",    
+      db: "<nama_database>"
+    }
+  ]
+});
+
+userpass dari db collect_vuestore
+user: frodewald
+pass: website-store

@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../learn-express-auth/auth_demo"
+		},
+		{
+			"path": "vuestore-client"
+		},
+		{
+			"path": "vuestore-server"
+		},
+		{
+			"path": "../learn-express-auth/bcrypt_demo"
+		},
+		{
+			"path": "../VueJS"
+		}
+	],
+	"settings": {}
+}
