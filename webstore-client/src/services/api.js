@@ -1,5 +1,5 @@
-export const BACKEND_URL = 'http://localhost:8000'
-const BASE_URL = "http://localhost:8000/api"
+export const BACKEND_URL = 'https://webstore-kdds.onrender.com'
+const BASE_URL = "https://webstore-kdds.onrender.com/api"
 
 
 // user url
