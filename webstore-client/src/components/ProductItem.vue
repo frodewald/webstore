@@ -1,6 +1,6 @@
 <template>
   <div class="product-item card shadow-sm mb-4" style="width: 30%;">
-  <img :src="`http://localhost:8000${product.imageUrl}`" class="card-img-top rounded-3" style="height: 200px; object-fit: cover;" />
+  <img :src="`${BACKEND_URL}${product.imageUrl}`" class="card-img-top rounded-3" style="height: 200px; object-fit: cover;" />
   <div class="card-body d-flex flex-column">
     <h5 class="card-title text-truncate">{{ product.name }}</h5>
     <p class="card-text text-success fw-bold">{{ product.price | currencyFormat }}</p>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
+import { BACKEND_URL } from '@/services/api';
 export default {
   props: ['product'],
 }

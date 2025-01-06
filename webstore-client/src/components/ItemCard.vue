@@ -1,6 +1,6 @@
 <template>
     <div class="product-container">
-        <img :src="`http://localhost:8000${item.imageUrl}`" alt="" class="product-image">
+        <img :src="`${BACKEND_URL}${item.imageUrl}`" alt="" class="product-image">
         <div class="details-wrap">
           <h3>{{ item.name }}</h3>
           <p>{{ item.price * quantity | currencyFormat }}</p>
@@ -17,7 +17,8 @@
 <script>
 import QtySelector from './QtySelector.vue';
 import axios from 'axios';
-import { ORDER_API_ENDPOINTS } from '@/services/api';
+// eslint-disable-next-line no-unused-vars
+import { ORDER_API_ENDPOINTS, BACKEND_URL } from '@/services/api';
 export default {
   components: {
     QtySelector

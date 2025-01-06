@@ -2,7 +2,7 @@
   <tr>
     <td>
       <div class="product-info">
-        <img :src="`http://localhost:8000${product.imageUrl}`" alt="" width="100">
+        <img :src="`${BACKEND_URL}${product.imageUrl}`" alt="" width="100">
         <h5 class="product-name">{{ product.name }}</h5>
       </div>
     </td>
@@ -34,7 +34,8 @@
 </template>
  
 <script>
-import { PRODUCT_API_ENDPOINTS } from '@/services/api';
+// eslint-disable-next-line no-unused-vars
+import { PRODUCT_API_ENDPOINTS, BACKEND_URL } from '@/services/api';
 import axios from 'axios';
  export default {
      props: [

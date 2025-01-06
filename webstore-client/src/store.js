@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import { ORDER_API_ENDPOINTS } from './services/api';
 
 Vue.use(Vuex);
 
@@ -26,7 +27,7 @@ export default new Vuex.Store({
   actions: {
     async fetchCartQty({ commit }) {
       try {
-        const { data } = await axios.get('http://localhost:8000/api/orders/user', {
+        const { data } = await axios.get(ORDER_API_ENDPOINTS.getOrder, {
           withCredentials: true // Ini memungkinkan pengiriman cookie
       });
         // console.log(data.flatMap(result => result.cart_items))

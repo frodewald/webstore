@@ -7,7 +7,7 @@
     </router-link>
     <div id="page-wrap" v-if="product">
         <div id="img-wrap">
-            <img :src="`http://localhost:8000${product.imageUrl}`" alt="">
+            <img :src="`${BACKEND_URL}${product.imageUrl}`" alt="">
         </div>
         <div id="product-details">
             <h1>{{ product.name }}</h1>
@@ -29,7 +29,8 @@ import axios from 'axios';
 import NotFound from '../errors/404'
 import QtySelector from '@/components/QtySelector.vue';
 import { ORDER_API_ENDPOINTS } from '@/services/api';
-import { PRODUCT_API_ENDPOINTS } from '@/services/api';
+// eslint-disable-next-line no-unused-vars
+import { PRODUCT_API_ENDPOINTS, BACKEND_URL } from '@/services/api';
 export default {
     components: {
         NotFound,

@@ -52,7 +52,7 @@
     <div class="mb-3">
         <label for="image" class="form-label">Foto Produk <span style="color: red;">*</span></label>
         <div class="upload-img">
-        <img v-if="Product.imgPreviewUrl || Product.imgUrl" :src="Product.imgPreviewUrl || `http://localhost:8000${Product.imgUrl}`" class="img-thumbnail" alt="">
+        <img v-if="Product.imgPreviewUrl || Product.imgUrl" :src="Product.imgPreviewUrl || `${BACKEND_URL}${Product.imgUrl}`" class="img-thumbnail" alt="">
         <div v-if="!Product.imgPreviewUrl && !Product.imgUrl" class="file-input-box">
             <input type="file" @change="onFileChange" class="custom-file-input" id="image-input" />
             <div class="icon-placeholder">
@@ -75,6 +75,8 @@
   </template>
   
   <script>
+  // eslint-disable-next-line no-unused-vars
+  import { BACKEND_URL } from '@/services/api';
   export default {
     props: {
       isUpdate: {

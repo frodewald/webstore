@@ -12,7 +12,7 @@
 import CartButton from './components/CartButton.vue';
 import Navbar from './components/Navbar.vue';
 import axios from 'axios';
-import { SESSION_API_ENDPOINTS } from './services/api';
+import { SESSION_API_ENDPOINTS, ORDER_API_ENDPOINTS } from './services/api';
 
 export default {
   components: {
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     async fetchCart() {
-      const result = await axios.get('http://localhost:8000/api/orders/user', {
+      const result = await axios.get(ORDER_API_ENDPOINTS.getOrder, {
             withCredentials: true // Sertakan ini agar cookies dikirim
         });
       let data = result.data.flatMap(order => order.products);
