@@ -39,7 +39,7 @@
     </div>
     <div class="mb-3">
         <label for="berat" class="form-label">Berat <span style="color: red;">*</span></label>
-        <input type="text" name="berat" class="form-control" v-model="Product.berat" id="berat" required />
+        <input type="number" name="berat" class="form-control" v-model="Product.berat" id="berat" required />
     </div>
     <div class="mb-3">
         <label for="dimensi" class="form-label">Dimensi</label>
