@@ -61,7 +61,8 @@
           const response = await axios.post(PRODUCT_API_ENDPOINTS.createProduct, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
-            }
+            },
+            withCredentials: true
           });
           if (response.status === 201) {
             this.$swal.fire({
