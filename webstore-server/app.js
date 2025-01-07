@@ -21,6 +21,7 @@ app.use(session({
         httpOnly: true,
         secure: false,
         maxAge: 1000 * 60 * 60 * 24,
+        sameSite: 'none'
     }
   }))
 app.use(function(req, res, next) { 
