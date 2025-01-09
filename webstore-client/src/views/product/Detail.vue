@@ -1,25 +1,31 @@
 <template>
   <div>
-    <router-link class="go-back" :to="{ name: 'product' }">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="fill: #41B883" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-      </svg>
-    </router-link>
     <div id="page-wrap" v-if="product">
+      <div id="product-container">
         <div id="img-wrap">
-            <img :src="`${BACKEND_URL}${product.imageUrl}`" alt="">
+          <img :src="`${BACKEND_URL}${product.imageUrl}`" alt="Product image">
         </div>
         <div id="product-details">
-            <h1>{{ product.name }}</h1>
-            <h3 id="price">{{ product.price | currencyFormat }}</h3>
-            <p>Average rating: {{ product.averageRating }}</p>
-            <p>Stock: {{ product.stock }}</p>
-            <p>{{ product.description }}</p>
-            <QtySelector v-model="quantity" :max="product.stock" class="qty-selector"/>
-            <button id="add-to-cart" @click="addToCart(product)">Add to Cart</button>
+          <h1 class="product-name">{{ product.name }}</h1>
+          <p id="price">{{ product.price | currencyFormat }}</p>
+          <p class="rating">⭐ {{ product.averageRating }}</p>
+          <p class="stock">Stock: {{ product.stock }}</p>
+          <p class="description">{{ product.description }}</p>
+          <div class="actions">
+            <QtySelector v-model="quantity" :max="product.stock" />
+          </div>
         </div>
+      </div>
+      <button id="add-to-cart" @click="addToCart(product)">Add to Cart</button>
+      <router-link class="go-back" :to="{ name: 'product' }">
+        <div class="back-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+          </svg>
+          <span>Back</span>
+        </div>
+      </router-link>
     </div>
-
     <NotFound v-else />
   </div>
 </template>
@@ -109,47 +115,130 @@ export default {
 </script>
 
 <style scoped>
-  .go-back {
-    display: inline-block;
-    margin: 30px 30px 0;
-  }
-  #page-wrap {
-    margin-top: 16px;
-    padding: 16px;
-    max-width: 600px;
-  }
+/* Container */
+#page-wrap {
+  margin: 30px auto;
+  min-height: auto;
+  padding: 20px;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
 
-  #img-wrap {
-    text-align: center;
-  }
+/* Back Button */
+.go-back {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+}
 
-  img {
-    width: 400px;
-  }
+.back-button {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #e0e0e0; /* Warna abu-abu untuk tombol back */
+  color: #333; /* Warna teks lebih gelap */
+  font-weight: bold;
+  font-size: 1.2em;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  #product-details {
-    padding: 16px;
-    position: relative;
-  }
+.back-button:hover {
+  background: #d6d6d6; /* Sedikit lebih gelap saat hover */
+  color: #000;
+}
 
-  .qty-selector {
-    float: right;
-  }
+/* Product Container */
+#product-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
 
-  #add-to-cart {
-    width: 100%;
-  }
+/* Image */
+#img-wrap img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  #price {
-    position: absolute;
-    top: 24px;
-    right: 16px;
-  }
-  .notif {
-    text-align: center;
-    color: white;
-    background-color: #41B883;
-    padding: 3%;
-    border-radius: 8px;
-  }
+/* Details */
+#product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-name {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #333;
+}
+
+#price {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #41B883;
+  margin-top: -5px;
+}
+
+.rating {
+  color: #f4b400;
+  font-size: 1.1em;
+}
+
+.stock {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.description {
+  font-size: 0.95em;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Add to Cart Button */
+#add-to-cart {
+  display: block;
+  margin-top: 20px;
+  padding: 14px 20px;
+  width: 100%;
+  background: #41B883;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+#add-to-cart:hover {
+  background: #369d70;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="nav-bar">
     <router-link :to="{ name: 'product' }" id="products-link">
-        <h1>Webstore</h1>
+      <h1>Webstore</h1>
     </router-link>
     <div class="logo-profile" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
       <router-link :to="{ name: 'profile'}" id="profile-icon">
@@ -12,12 +12,26 @@
       </router-link> 
     </div>
     <div class="info-profile" v-if="!isNotForInfoProfile" v-show="isHovered" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-      <div class="logout" @click="logout">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+      <a href="/" class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+        </svg>
+        <span>Home</span>
+      </a>
+      <a v-if="isAdmin" href="/admin/dashboard" class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+          <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"/>
+          <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+          <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <div class="info-item logout" @click="logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
           <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
         </svg>
-        <p>Logout</p>
+        <span>Logout</span>
       </div>
     </div>
   </div>
@@ -30,6 +44,12 @@ export default {
   data() {
     return {
       isHovered: false
+    }
+  },
+  props: {
+    isAdmin: {
+      type: Boolean,
+      required: true
     }
   },
   computed: {
@@ -61,55 +81,64 @@ export default {
 
 <style scoped>
 #nav-bar {
-    border-bottom: 1px solid #ddd;
-    height: 75px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
-  }
-  #products-link {
-    text-align: center;
-    display: block;
-    color: #41B883;
-    font-size: 22px;
-    text-decoration: none;
-  }
-  #products-link h1 {
-      margin: 0;
-  }
-  #cart-link {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-  }
-  .logo-profile {
-    padding: 10px; /* Area lebih luas yang akan memicu event mouseenter */
-    cursor: pointer;
-  }
-  .info-profile {
-    position: absolute;
-    top: 60px;
-    right: 40px;
-    background-color: white;
-    border-radius: 5px;
-    padding: 10px;
-    border: 0.5px solid rgba(163, 163, 163, 0.5);
-    box-shadow: 0px 0px 1px 0;
-    z-index: 100;
-  }
-  .info-profile:hover {
-    background-color: rgb(207, 205, 205);
-  }
-  .logout {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-  .info-profile p {
-    padding: 0;
-    margin: 0 0 0 5px;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 75px;
+  border-bottom: 1px solid #ddd;
+}
+
+#products-link {
+  text-decoration: none;
+  color: #41B883;
+  font-size: 22px;
+}
+
+#products-link h1 {
+  margin: 0;
+}
+
+.logo-profile {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.info-profile {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.info-item:hover {
+  background-color: #41B883;
+  color: white;
+}
+
+.info-item svg {
+  margin-right: 8px;
+}
+
+.logout {
+  margin-top: 5px;
+}
 </style>

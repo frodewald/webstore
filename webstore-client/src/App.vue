@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :isAdmin="isAdmin" />
     <router-view @update-cart-qty="updateCartQty" @update-qty="handleUpdateQty"/>
     <CartButton v-if="showCartButton" :cartQty="cartQty" />
   </div>
@@ -23,7 +23,8 @@ export default {
     return {
       cartQty: 0,
       productQty: 0,
-      showCartButton: true
+      showCartButton: true,
+      isAdmin: false
     }
   },
   async created() {
@@ -59,8 +60,8 @@ export default {
         const { data } = await axios.get(SESSION_API_ENDPOINTS.checkSession, {
           withCredentials: true,
         });
-        const isAdmin = data.role === 'admin'
-        this.showCartButton = !isNotForCartBtnPage.includes(this.$route.name) && !isAdmin;
+        this.isAdmin = data.role === 'admin'
+        this.showCartButton = !isNotForCartBtnPage.includes(this.$route.name) && !this.isAdmin;
       } catch (error) {
         console.error("Error fetching session:", error);
         this.showCartButton = true;
