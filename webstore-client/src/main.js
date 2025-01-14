@@ -5,6 +5,8 @@ import store from './store'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Pagination from 'vue-pagination-2';
+import { register } from 'swiper/element/bundle';
+register();
 
 Vue.use(VueSweetalert2);
 

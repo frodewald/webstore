@@ -16,6 +16,10 @@ module.exports = mongoose => {
           unique: true,    // Slug harus unik
           lowercase: true  // Slug selalu dalam huruf kecil
         },
+        iconUrl: {
+          type: String,
+          default: '/img/categories/placeholder.svg'
+        },
         parentCategory: {
           type: mongoose.Schema.Types.ObjectId, // Referensi ke kategori lain (kategori induk)
           ref: "Category",                      // Referensi ke koleksi 'Category'

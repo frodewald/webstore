@@ -1,7 +1,10 @@
 module.exports = mongoose => {
     const schema = mongoose.Schema(
         {
-            code: String,
+            code: {
+                type: String,
+                unique: true
+            },
             name: String,
             price: Number,
             description: String,
@@ -15,9 +18,12 @@ module.exports = mongoose => {
             dimensions: String,
             averageRating: {
                 type: Number, // Ini akan menyimpan angka desimal
+                default: 0,
                 min: 0,
                 max: 5 // Misalnya, batas rating antara 0 hingga 5
             },
+            isFeatured: { type: Boolean, default: false },
+            sale: { type: Number, default: 0 }
         },
         {
             timestamps: true,  // Buat otomatis createdAt dan updatedAt
@@ -30,6 +36,6 @@ module.exports = mongoose => {
         return object
     })
 
-    const Product = mongoose.model("products", schema)
+    const Product = mongoose.model("Product", schema)
     return Product
 }

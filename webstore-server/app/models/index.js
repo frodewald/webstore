@@ -11,4 +11,5 @@ db.orders = require('./order.model')(mongoose)
 db.categories = require('./category.model')(mongoose)
 // ternyata cara diatas itu berfungsi agar mengisi parameter dari module exportsnya dengan data moongose yang sudah kita import disini
 db.users = require('./user.model')(mongoose)
+db.checkouts = require('./checkout.model')(mongoose)
 module.exports = db

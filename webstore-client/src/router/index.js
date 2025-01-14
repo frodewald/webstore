@@ -8,6 +8,10 @@ import Register from '@/views/auth/register.vue'
 import Login from '@/views/auth/login.vue'
 import NotFound from '../views/errors/404.vue'
 import Profile from '@/views/profile/Index.vue'
+import Home from '@/views/home/index.vue'
+import Checkout from '@/views/checkout/index.vue'
+import AllCategories from '@/views/categories/AllCategories.vue'
+import statusPesanan from '@/views/status-pesanan/index.vue'
 import { SESSION_API_ENDPOINTS } from '@/services/api'
 import axios from 'axios'
 
@@ -61,6 +65,11 @@ const requireRole = (role) => (to, from, next) => {
 const routes = [
   {
     path: '/',
+    name: 'home',
+    component: Home,
+  },
+  {
+    path: '/products',
     name: 'product',
     component: Product,
   },
@@ -70,14 +79,29 @@ const routes = [
     component: ProductDetail,
   },
   {
+    path: '/categories',
+    name: 'categories',
+    component: AllCategories,
+  },
+  {
     path: '/cart',
     name: 'cart',
     component: Cart,
   },
   {
+    path: '/checkout',
+    name: 'checkout',
+    component: Checkout
+  },
+  {
     path: '/profile',
     name: 'profile',
     component: Profile,
+  },
+  {
+    path: '/status',
+    name: 'status',
+    component: statusPesanan
   },
   {
     path: '/register',

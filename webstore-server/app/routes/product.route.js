@@ -5,6 +5,9 @@ module.exports = (app) => {
 
     router.get('/', products.findAll)
     router.get('/:id', products.findOne)
+    router.get('/get/featured', products.featuredProducts)
+    router.get('/category/:id', products.getProductsByCategoryId);
+    router.get('/get/search', products.getProductsBySearch);
     router.post('/create',upload.single('image'), products.createProduct)
     router.put('/update/:id', upload.single('image'), products.updateProduct)
     router.delete('/delete/:id', products.deleteProduct)

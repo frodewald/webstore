@@ -15,6 +15,6 @@ module.exports = mongoose => {
         return object
     })
 
-    const Order = mongoose.model("orders", schema)
+    const Order = mongoose.model("Order", schema)
     return Order
 }

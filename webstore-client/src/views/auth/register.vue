@@ -1,9 +1,11 @@
 <template>
   <div class="container">
-    <div v-if="notif" class="notif" :class="notifType">
-      <i class="icon"></i>
-      <span>{{ responseRegis }}</span>
-    </div>
+    <Notification
+      :notif="notif"
+      :response="responseRegis"
+      :notifType="notifType"
+      @update:notif="notif = $event"
+    />
     <div class="register-card">
       <h3 class="text-center">Create Account</h3>
       <form method="post" @submit.prevent="registerUser">
@@ -57,8 +59,12 @@
 <script>
 import axios from 'axios';
 import { USER_API_ENDPOINTS } from '@/services/api';
+import Notification from '@/components/Notification.vue'
 export default {
   name: "registerForm",
+  components: {
+    Notification,
+  },
   data() {
     return {
       username: '',
@@ -105,17 +111,16 @@ export default {
         if (response.status === 201) {
           this.notifType = 'success';
           this.responseRegis = 'Register Successfully';
-          this.showNotif();
+          this.notif = true;
           setTimeout(() => {
             this.$router.replace('/');
           }, 1500);
         }
         console.log('User registered:', response.data);
       } catch (error) {
+        this.notif = true;
         this.notifType = 'error';
         this.responseRegis = error.response.data.message || 'Error occurred';
-        this.showNotif();
-        console.error('Registration failed:', error);
       }
     },
     async fetchAllUsers() {
@@ -203,12 +208,6 @@ export default {
         this.emailValidation();
       }
     },
-    showNotif() {
-      this.notif = true;
-      setTimeout(() => {
-        this.notif = false;
-      }, 3000);
-    },
   }
 }
 </script>
@@ -263,69 +262,8 @@ export default {
   color: #41b883;
 }
 
-.notif {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #41b883;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: slideDown 0.5s ease, fadeOut 0.5s 2.5s ease forwards;
-}
-
-.notif.success {
-  background-color: #41b883;
-}
-
-.notif.error {
-  background-color: #e63946;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  background-size: cover;
-}
-
-.success .icon {
-  background-image: url("../../assets/icons/check.svg");
-}
-
-.error .icon {
-  background-image: url("../../assets/icons/error.svg");
-}
-
 .border-red {
   border: 2px solid red;
   outline: none;
-}
-
-@keyframes slideDown {
-  0% {
-    top: -50px;
-    opacity: 0;
-  }
-  100% {
-    top: 20px;
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    top: -50px;
-  }
 }
 </style>

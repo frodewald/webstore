@@ -1,9 +1,11 @@
 <template>
   <div class="container">
-    <div v-if="notif" class="notif" :class="notifType">
-      <i class="icon"></i>
-      <span>{{ responseLogin }}</span>
-    </div>
+    <Notification
+      :notif="notif"
+      :response="responseLogin"
+      :notifType="notifType"
+      @update:notif="notif = $event"
+    />
     <div class="register-card">
       <h3 class="text-center">Login</h3>
       <form method="post" @submit.prevent="loginUser">
@@ -33,15 +35,19 @@
 <script>
 import axios from "axios";
 import { USER_API_ENDPOINTS } from "@/services/api";
+import Notification from '@/components/Notification.vue'
 export default {
   name: "loginForm",
+  components: {
+    Notification,
+  },
   data() {
     return {
       username: "",
       password: "",
       notif: false,
       responseLogin: "",
-      notifType: "", // Class untuk sukses/error
+      notifType: "",
     };
   },
   methods: {
@@ -59,23 +65,17 @@ export default {
         );
         if (response.status === 200) {
           this.notifType = "success";
+          this.notif = true
           this.responseLogin = "Login successful!";
-          this.showNotif();
           setTimeout(() => {
             this.$router.push("/admin/dashboard");
           }, 1500);
         }
       } catch (error) {
         this.notifType = "error";
+        this.notif = true
         this.responseLogin = error.response?.data?.message || "An error occurred!";
-        this.showNotif();
       }
-    },
-    showNotif() {
-      this.notif = true;
-      setTimeout(() => {
-        this.notif = false;
-      }, 3000); // Notif otomatis hilang
     },
   },
 };
@@ -134,63 +134,5 @@ export default {
 
 .form-footer a:hover {
   text-decoration: underline;
-}
-
-.notif {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #41b883;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: slideDown 0.5s ease, fadeOut 0.5s 2.5s ease forwards;
-}
-
-.notif.success {
-  background-color: #41b883;
-}
-
-.notif.error {
-  background-color: #e63946;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  background-size: cover;
-}
-
-.success .icon {
-  background-image: url("../../assets/icons/check.svg"); /* Sesuaikan dengan ikon sukses */
-}
-
-.error .icon {
-  background-image: url("../../assets/icons/error.svg"); /* Sesuaikan dengan ikon error */
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateX(-50%) translateY(-30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 </style>

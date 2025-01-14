@@ -1,5 +1,3 @@
-const { type } = require("express/lib/response")
-
 module.exports = mongoose => {
     const schema = mongoose.Schema({
         username: {
@@ -34,6 +32,6 @@ module.exports = mongoose => {
         return object
     })
 
-    const User = mongoose.model("users", schema)
+    const User = mongoose.model("User", schema)
     return User
 }

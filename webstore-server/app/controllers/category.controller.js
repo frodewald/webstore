@@ -1,5 +1,4 @@
 const db = require('../models')
-// const mongoose = require('mongoose');
 
 const Category = db.categories
 

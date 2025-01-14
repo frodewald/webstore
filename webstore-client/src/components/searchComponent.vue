@@ -5,69 +5,28 @@
         type="text" 
         class="form-control search-input" 
         placeholder="Search..." 
-        :value="searchInput" 
-        @input="$emit('input', $event.target.value)" 
+        v-model="searchInput"
         @wheel.prevent
       />
-      <button 
-        class="btn dropdown-toggle criteria-button" 
-        type="button" 
-        data-bs-toggle="dropdown" 
-        aria-expanded="false"
+      <router-link 
+        v-if="searchInput.trim()" 
+        :to="{ path: '/products', query: { search: searchInput } }"
+        class="btn search-button"
       >
-        {{ selectedCriteriaInComp || 'Filter By' }}
-      </button>
-      <ul class="dropdown-menu">
-        <li 
-          v-for="(criteria, index) in searchByCriteriaInComp" 
-          :key="index"
-        >
-          <a 
-            class="dropdown-item" 
-            href="#" 
-            @click="selectCriteria(criteria)"
-          >
-            {{ criteria }}
-          </a>
-        </li>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-          <a 
-            class="dropdown-item" 
-            href="#" 
-            @click="resetCriteria"
-          >
-            Reset Filter
-          </a>
-        </li>
-      </ul>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    searchInput: {
-      type: String,
-    },
-  },
   data() {
     return {
-      searchByCriteriaInComp: ["nama", "rating"],
-      selectedCriteriaInComp: "",
+      searchInput: '',
     };
-  },
-  methods: {
-    selectCriteria(criteria) {
-      this.selectedCriteriaInComp = criteria;
-      this.$emit("selectedCriteriaInComp", this.selectedCriteriaInComp);
-    },
-    resetCriteria() {
-      this.selectedCriteriaInComp = "";
-      this.$emit("selectedCriteriaInComp", "");
-      this.$emit("searchInput", "");
-    },
   },
 };
 </script>
@@ -84,7 +43,8 @@ export default {
 
 .input-group {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  height: 50px;
 }
 
 .search-input {
@@ -98,11 +58,12 @@ export default {
   box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.criteria-button {
+.search-button {
   background-color: #198754;
+  height: 100%;
   color: #ffffff;
-  font-size: 1rem;
-  padding: 0.75rem 1rem;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 0 8px 8px 0;
   display: flex;
@@ -110,30 +71,37 @@ export default {
   justify-content: center;
 }
 
-.criteria-button:hover {
+.search-button:hover {
   background-color: #146c43;
 }
 
-.dropdown-menu {
-  min-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+/* Responsive: Adjust the size of the button for smaller screens */
+@media (max-width: 768px) {
+  .search-button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+  .search-input {
+    font-size: 0.8rem;
+  }
+
+  .input-group {
+    height: 40px;
+  }
 }
 
-.dropdown-item {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  color: #333333;
-  transition: background-color 0.2s;
-}
+@media (max-width: 480px) {
+  .search-button {
+    font-size: 0.6rem;
+    padding: 0.35rem 0.7rem;
+  }
+  .search-input {
+    padding: 0.7rem;
+    font-size: 0.8rem;
+  }
 
-.dropdown-item:hover {
-  background-color: #f0f0f0;
-}
-
-.dropdown-divider {
-  margin: 0.5rem 0;
-  border-top: 1px solid #e0e0e0;
+  .input-group {
+    height: 40px;
+  }
 }
 </style>

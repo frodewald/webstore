@@ -6,19 +6,16 @@ const Order = db.orders
 exports.findOrder = (req, res) => {
     const userId = req.session.user_id
     const id = mongoose.Types.ObjectId(userId);
-    // menjoint 2 atau lebih collection dalam mongodb
     Order.aggregate([
     {
-        // match itu seperti where dalam sql
         $match: {
             user_id: id
         }
     }, 
     {
-        $unwind: "$cart_items" // Pecah array menjadi dokumen terpisah
+        $unwind: "$cart_items"
     },
     {
-        // fungsi lookup ini buat menggabungkan collection, dan as itu menaruhnya di mana
         $lookup: {
             from: "products",
             localField: "cart_items.code",
@@ -27,13 +24,13 @@ exports.findOrder = (req, res) => {
         }
     },
     {
-        $unwind: "$products"  // Pisahkan array product jika hasil lookup adalah array
+        $unwind: "$products" 
     },
     {
         $group: {
             _id: "$user_id",
-            cart_items: { $push: "$cart_items" }, // Kumpulkan kembali cart_items
-            products: { $push: "$products" } // Kumpulkan produk
+            cart_items: { $push: "$cart_items" },
+            products: { $push: "$products" }
         }
     }])
     .then((result) => {
@@ -51,31 +48,28 @@ exports.addToCart = (req, res) => {
     const products = req.body.product;
 
     products.forEach(async (product) => {
-        const { code, quantity } = product; // Mengambil code dan quantity
+        const { code, quantity } = product;
         const isProductInCart = async (code) => {
             const order = await Order.findOne({ user_id: id, "cart_items.code": code })
             return !!order;
         }
 
         try {
-            // Periksa apakah produk sudah ada di keranjang
             if (await isProductInCart(code)) {
-                // Jika produk ada, update quantity
                 await Order.updateOne(
-                    { user_id: id, "cart_items.code": code }, // Mencari produk di cart_items
+                    { user_id: id, "cart_items.code": code },
                     {
-                        $set: { "cart_items.$.quantity": quantity } // Menambah quantity yang ada dengan nilai baru
+                        $set: { "cart_items.$.quantity": quantity }
                     }
                 );
                 res.send({ message: "Quantity produk diperbarui di keranjang." });
             } else {
-                // Jika produk tidak ada, tambahkan produk ke cart_items
-                const cartItem = { code, quantity };  // Buat object cartItem baru
+                const cartItem = { code, quantity };
                 await Order.updateOne(
                     { user_id: id },
                     {
                         $addToSet: {
-                            cart_items: cartItem  // Menambahkan produk baru
+                            cart_items: cartItem
                         }
                     }
                 );
@@ -109,3 +103,21 @@ exports.removeFromCart = (req, res) => {
         })
     })
 }
+
+exports.removeAllFromCart = (req, res) => {
+    const userId = req.session.user_id;
+    const id = mongoose.Types.ObjectId(userId);
+
+    Order.updateOne(
+        { user_id: id },
+        { $set: { cart_items: [] } }
+    )
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        res.status(409).send({
+            message: err.message
+        });
+    });
+};

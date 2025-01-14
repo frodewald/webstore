@@ -1,5 +1,11 @@
 <template>
   <div>
+    <Notification
+      :notif="notif"
+      :response="response"
+      :notifType="notifType"
+      @update:notif="notif = $event"
+    />
     <div id="page-wrap">
         <h1>Shopping Cart</h1>
         <ItemCard 
@@ -11,23 +17,28 @@
         />
         <h2 class="text-center m-5" v-if="cartItems.length === 0" style="opacity: 0.5;">Tidak Ada Produk</h2>
         <h3 id="total-price">Total: {{ totalPrice? totalPrice : "0" | currencyFormat }}</h3>
-        <button id="checkout-button">Checkout</button>
+        <button id="checkout-button" @click="goToCheckout">Checkout</button>
     </div>
   </div>
 </template>
 
 <script>
 import ItemCard from '@/components/ItemCard.vue';
+import Notification from '@/components/Notification.vue';
 import axios from 'axios';
 import { ORDER_API_ENDPOINTS } from '@/services/api';
 
 export default {
   components: {
-    ItemCard
+    ItemCard,
+    Notification
   },
   data() {
     return {
       cartItems: [],
+      notif: false,
+      response: '',
+      notifType: '',
     }
   },
   methods: {
@@ -48,12 +59,21 @@ export default {
     async fetchCart() {
       try {
         const { data } = await axios.get(ORDER_API_ENDPOINTS.getOrder, {
-            withCredentials: true // Sertakan ini agar cookies dikirim
+            withCredentials: true
         });
-        this.cartItems = data.flatMap(result => result.products); // Menggunakan flatMap jika data berbentuk array
+        this.cartItems = data.flatMap(result => result.products);
         this.$emit('update-cart-qty', this.cartItems.length);
       } catch (error) {
         console.error("Error fetching cart:", error);
+      }
+    },
+    goToCheckout() {
+      if(!this.cartItems.length) {
+        this.notif = true
+        this.response = 'produk tidak boleh kosong'
+        this.notifType = 'error'
+      } else {
+        this.$router.push("/checkout");
       }
     }
   },

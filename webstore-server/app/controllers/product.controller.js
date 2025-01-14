@@ -28,6 +28,63 @@ exports.findOne = (req, res) => {
     })
 }
 
+exports.getProductsByCategoryId = (req, res) => {
+	const { id } = req.params;
+
+	Product.find({ category_id: id }) // Query products with the matching category
+		.then((products) => {
+			if (products.length === 0) {
+					return res.status(404).send({
+							message: `No products found for category: ${category}`,
+					});
+			}
+			res.send(products);
+		})
+		.catch((err) => {
+			res.status(500).send({
+					message: err.message || 'An error occurred while fetching products.',
+			});
+		});
+};
+
+exports.getProductsBySearch = async (req, res) => {
+  try {
+    const searchQuery = req.query.search || '';
+    
+    if (!searchQuery) {
+      return res.status(400).json({ message: 'Search query is required.' });
+    }
+
+    const products = await Product.aggregate([
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category_id',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $match: {
+          $or: [
+            { name: { $regex: searchQuery, $options: 'i' } },
+            { 'category.name': { $regex: searchQuery, $options: 'i' } }
+          ]
+        }
+      },
+      {
+        $unwind: '$category'
+      }
+    ]);
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to fetch products', error: error.message });
+  }
+};
+
+
 exports.updateProduct = async (req, res) => {
   const codeFromParams = req.params.id;
   const { code, name, categoryId, price, description, stock, weight, dimensions } = req.body;
@@ -150,5 +207,19 @@ exports.deleteProduct = async (req, res) => {
   } catch (error) {
     console.error('Error creating product:', error);
     res.status(500).json({ message: 'Failed to create product' });
+  }
+}
+
+exports.featuredProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ isFeatured: true })
+    
+    if (products.length > 0) {
+      res.status(200).json(products)
+    } else {
+      res.status(404).json({ message: 'No featured products found' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message })
   }
 }

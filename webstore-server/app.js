@@ -67,6 +67,7 @@ require('./app/routes/product.route')(app)
 require('./app/routes/order.route')(app)
 require('./app/routes/user.route')(app)
 require('./app/routes/category.route')(app)
+require('./app/routes/checkout.route')(app)
 
 
 app.listen(PORT, () => {

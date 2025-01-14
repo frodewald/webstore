@@ -3,6 +3,7 @@
     <Navbar :isAdmin="isAdmin" />
     <router-view @update-cart-qty="updateCartQty" @update-qty="handleUpdateQty"/>
     <CartButton v-if="showCartButton" :cartQty="cartQty" />
+    <MyFooter />
   </div>
 </template>
 
@@ -11,13 +12,15 @@
 
 import CartButton from './components/CartButton.vue';
 import Navbar from './components/Navbar.vue';
+import MyFooter from './components/Footer.vue';
 import axios from 'axios';
 import { SESSION_API_ENDPOINTS, ORDER_API_ENDPOINTS } from './services/api';
 
 export default {
   components: {
     Navbar,
-    CartButton
+    CartButton,
+    MyFooter
   },
   data() {
     return {
@@ -79,7 +82,7 @@ export default {
 
   #page-wrap {
     margin: auto;
-    max-width: 800px;
+    max-width: 1200px;
     min-height: 100vh;
   }
 

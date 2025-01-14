@@ -1,6 +1,11 @@
 <template>
     <div class="container mt-5">
-      <h4 v-if="notif" class="notif">update profile successfully</h4>
+      <Notification
+        :notif="notif"
+        :response="response"
+        :notifType="notifType"
+        @update:notif="notif = $event"
+      />
       <h1 class="text-center mb-4">Profile</h1>
       <form @submit.prevent="updateProfile">
         <div class="mb-3">
@@ -37,7 +42,11 @@
   <script>
   import axios from 'axios';
   import { USER_API_ENDPOINTS } from '@/services/api';
+  import Notification from '@/components/Notification.vue'
   export default {
+    components: {
+      Notification,
+    },
     data() {
       return {
         profile: {
@@ -47,7 +56,9 @@
           alamat: "",
           telepon: "",
         },
-        notif: false
+        notif: false,
+        response: '',
+        notifType: ''
       };
     },
     async created() {
@@ -55,21 +66,29 @@
     },
     methods: {
       async updateProfile() {
-        const response = await axios.post(USER_API_ENDPOINTS.updateUser, {
-          username: this.profile.nama,
-          email: this.profile.email,
-          alamat: this.profile.alamat,
-          telepon: this.profile.telepon,
-        }, {
-          withCredentials: true // Ini memungkinkan pengiriman cookie
-        });
-        if (response.status === 200) {
-          this.notif = true
+        try {
+          const response = await axios.post(USER_API_ENDPOINTS.updateUser, {
+            username: this.profile.nama,
+            email: this.profile.email,
+            alamat: this.profile.alamat,
+            telepon: this.profile.telepon,
+          }, {
+            withCredentials: true // Ini memungkinkan pengiriman cookie
+          });
+          if (response.status === 200) {
+            this.notifType = "success";
+            this.notif = true
+            this.response = "Update successful!";
+          }
+        } catch (error) {
+          this.notif = true;
+          this.notifType = 'error';
+          this.response = error.response.data.message || 'Error occurred';
         }
       },
       async getProfile() {
         const { data } = await axios.get(USER_API_ENDPOINTS.getUser, {
-          withCredentials: true, // Penting untuk session-based authentication
+          withCredentials: true,
         })
 
         const getUser = data.user
@@ -96,13 +115,6 @@
   </script>
   
   <style scoped>
-  .notif {
-    text-align: center;
-    color: white;
-    background-color: #41B883;
-    padding: 3%;
-    border-radius: 8px;
-  }
   .container {
     max-width: 600px;
     margin-bottom: 10%;
